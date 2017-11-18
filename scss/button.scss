@@ -1,0 +1,45 @@
+.button {
+  display: inline-flex;
+  width: 100px;
+  height: 100px;
+  max-height: 100%;
+  margin: 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  
+}
+
+.button__hidden {
+  display: none;
+}
+
+#rewind {
+  background-image: url(img/back.svg);
+}
+
+#play {
+  background-image: url(img/play.svg);
+}
+
+#pause {
+  background-image: url(img/pause.svg);
+}
+
+#mute {
+  background-image: url(img/mute.svg);
+}
+
+#unmute {
+  background-image: url(img/unmute.svg);
+}
+
+#fullscreen {
+  background-image: url(img/fullscreen.svg);
+}
+
+#forward {
+  background-image: url(img/next.svg);
+}

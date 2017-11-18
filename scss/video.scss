@@ -1,0 +1,37 @@
+.videoPlayer {
+  width: 100%;
+}
+
+.video__container {
+  position: relative;
+}
+
+.video__overlay {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.overlay__container {
+  width: 100%;
+  max-height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.video {
+  width: 100%;
+  vertical-align: middle;
+}
+
+.video__controls {
+  
+}
+
+.controls__container {
+  margin: 0 50px;
+  display: flex;
+  justify-content: center;
+}
