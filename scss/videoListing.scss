@@ -1,0 +1,28 @@
+.videoListing {
+  margin-bottom: 1.125em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumbnail {
+  position: relative;
+}
+
+.image {
+  width: 100%;
+}
+
+.videoTime {
+  position: absolute;
+  right: 5px;
+  bottom: 20px;
+  padding: 2px 7px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.description h3 {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
