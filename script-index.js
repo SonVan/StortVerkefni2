@@ -18,11 +18,15 @@ var writeHTML = (function() {
   // Nær í gögnin og kallar á write() til að skrifa html.
   function fetchData(API_URL) {
     var fetch = new XMLHttpRequest();
+
+    showLoading();
+
     fetch.open('GET', API_URL, true);
     fetch.onload = function() {
       var data = JSON.parse(fetch.response);
       allData = data;
       write();
+      window.setTimeout(stopLoading, 500);
     }
     fetch.send();
   }
@@ -69,11 +73,13 @@ var writeHTML = (function() {
     var created = timeSince(allData.videos[videoID-1].created);
     var duration = secToDuration(allData.videos[videoID-1].duration);
     var poster = allData.videos[videoID-1].poster;
+    var video = allData.videos[videoID-1].video;
 
     var outerDiv = document.createElement("div");
     outerDiv.setAttribute("class", "videoListing col col-6 col-sm-12");
 
-    var innerDiv1 = document.createElement("div");
+    var innerDiv1 = document.createElement("a");
+    innerDiv1.setAttribute("href", video);
     innerDiv1.setAttribute("class", "thumbnail");
 
     var innerDiv2 = document.createElement("div");
@@ -87,7 +93,8 @@ var writeHTML = (function() {
     x2InnerDiv2.setAttribute("class", "videoTime");
     x2InnerDiv2.appendChild(document.createTextNode(duration));
 
-    var x2InnerDiv3 = document.createElement("h3");
+    var x2InnerDiv3 = document.createElement("a");
+    x2InnerDiv3.setAttribute("href", video);
     x2InnerDiv3.appendChild(document.createTextNode(title));
 
     var x2InnerDiv4 = document.createElement("p");
@@ -146,6 +153,24 @@ var writeHTML = (function() {
       return ("Vantar upphlöðunardagsetningu");
     }
   }
+
+  function showLoading() {
+    var loading = document.createElement("div");
+    loading.setAttribute("class", "loading");
+
+    var img = document.createElement("img");
+    img.setAttribute("src", "loading.gif");
+    img.setAttribute("class", "gif");
+
+    loading.appendChild(img);
+    main.appendChild(loading);
+  }
+
+  function stopLoading() {
+    var loading = document.querySelector(".loading");
+    loading.remove();
+  }
+
 
   return {
     fetchData: fetchData

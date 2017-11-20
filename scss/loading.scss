@@ -1,0 +1,15 @@
+.loading {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  max-width: 1000px;
+  margin-left: -20px;
+  top: 30vh;
+}
+
+.gif {
+  width: 25vh;
+  height: 25vh;
+}
