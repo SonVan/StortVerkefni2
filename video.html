@@ -10,28 +10,24 @@
     <main>
 	  <div class="videoPlayer">
 	    <div class="video__container">
-          <video class = "video" src="videos/bunny.mp4"></video>
-		  <div class = "video__overlay">
-		    <div class = "overlay__container">
-		      <button class="button" id ="play"></button>
-			</div>
+          <video class = "video"></video>
+		  <div class = "video__overlay" id = "overlay">
+		    <button class="button" id ="play"></button>
 		  </div>
 		</div>
 		
 	    <div class="video__controls">
-		  <div class="controls__container">
-	        <button class="button" id ="rewind"></button>
-		    <button class="button" id ="play"></button>
-		    <button class="button__hidden" id ="pause"></button>
-		    <button class="button" id ="mute"></button>
-		    <button class="button__hidden" id ="unmute"></button>
-		    <button class="button" id ="fullscreen"></button>
-		    <button class="button" id ="forward"></button>
-		  </div>
+	      <button class="button" id ="rewind"></button>
+		  <button class="button" id ="play"></button>
+		  <button class="button__hidden" id ="pause"></button>
+		  <button class="button" id ="mute"></button>
+		  <button class="button__hidden" id ="unmute"></button>
+		  <button class="button" id ="fullscreen"></button>
+		  <button class="button" id ="forward"></button>
 	    </div>
 	  </div>
     </main>
-    <h2>Til baka</h2>
+    <h2 id = "back">Til baka</h2>
     <script src="script-compiled.js"></script>
   </body>
 </html>
