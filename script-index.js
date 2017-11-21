@@ -1,7 +1,14 @@
 
 document.addEventListener("DOMContentLoaded", function () {
-  if (window.location["pathname"] === "/") {
+  var currentLocation = window.location["pathname"];
+  if (currentLocation === "/" ||
+      currentLocation === "/svn5/vefforritun/stort-verkefni-2/" ||
+      currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html") {
     var API_URL = "/videos.json";
+    if (currentLocation === "/svn5/vefforritun/stort-verkefni-2/" ||
+        currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html") {
+      API_URL = "/svn5/vefforritun/stort-verkefni-2/videos.json";
+    }
     writeHTML.fetchData(API_URL);
     }
 });
@@ -170,7 +177,6 @@ var writeHTML = (function() {
     var loading = document.querySelector(".loading");
     loading.remove();
   }
-
 
   return {
     fetchData: fetchData
