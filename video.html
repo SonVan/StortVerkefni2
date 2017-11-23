@@ -2,6 +2,7 @@
 <html class="grid" lang="is">
   <head>
     <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
     <title>Myndband</title>
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -9,25 +10,11 @@
     <h1 id = "video__title">Myndbandaleigan</h1>
     <main>
 	  <div class="videoPlayer">
-	    <div class="video__container">
-          <video class = "video"></video>
-		  <div class = "video__overlay" id = "overlay">
-		    <button class="button" id ="play"></button>
-		  </div>
-		</div>
-		
-	    <div class="video__controls">
-	      <button class="button" id ="rewind"></button>
-		  <button class="button" id ="play"></button>
-		  <button class="button__hidden" id ="pause"></button>
-		  <button class="button" id ="mute"></button>
-		  <button class="button__hidden" id ="unmute"></button>
-		  <button class="button" id ="fullscreen"></button>
-		  <button class="button" id ="forward"></button>
-	    </div>
 	  </div>
     </main>
-    <h2 id = "back">Til baka</h2>
+    <div class = "back">
+	  <button class="button__back">Til baka</button>
+	</div>
     <script src="script-compiled.js"></script>
   </body>
 </html>
