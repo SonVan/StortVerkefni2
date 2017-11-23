@@ -11,6 +11,16 @@
   
 }
 
+.button__back {
+  display: inline-block;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1em;
+  padding: 5px;
+}
+
 .button__hidden {
   display: none;
 }

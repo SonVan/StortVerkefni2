@@ -1,4 +1,11 @@
-#video__title, #back {
+#video__title {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.back {
   text-align: center;
 }
 
@@ -8,6 +15,7 @@
 
 .video__container {
   position: relative;
+  text-align: center;
 }
 
 .video__overlay {
@@ -31,4 +39,5 @@
 .video__controls {
   display: flex;
   justify-content: center;
+  margin: 20px;
 }
