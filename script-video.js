@@ -2,39 +2,39 @@
  * VideoPlayer
  */
 class Videoplayer {
-  
+
   constructor() {
 	this.title_container = document.querySelector('#video__title');
 	var videoplayer = document.querySelector('.videoPlayer');
 	var back = document.querySelector('.button__back');
 	back.addEventListener('click', this.goBack.bind(this));
-	
-    this.video_container = document.createElement('div');
+
+  this.video_container = document.createElement('div');
 	this.video_container.setAttribute('class', 'video__container');
-    this.controls_container = document.createElement('div');
+  this.controls_container = document.createElement('div');
 	this.controls_container.setAttribute('class', 'video__controls');
-	
+
 	videoplayer.appendChild(this.video_container);
 	videoplayer.appendChild(this.controls_container);
   }
-  
+
   goBack() {
 	window.location.href = "../";
   }
-  
+
   load() {
 	this.createControlsElement();
 	this.createVideoElement();
 	this.id = window.location.search.substr(4);
 	this.fetchData();
   }
-  
+
   fetchData(data){
 	var API_URL = "/videos.json";
     var request = new XMLHttpRequest();
     request.open('GET', API_URL, true);
     var Videoplayer = this;
-	
+
 	request.onload = function() {
       if (request.status < 400) {
 		var data = JSON.parse(request.response);
@@ -43,54 +43,54 @@ class Videoplayer {
         this.showError();
       }
     };
-	
+
     request.onerror = function() {
       this.showError();
     };
-    
+
     request.send();
-	
+
   }
-  
+
   play() {
 	this.buttons.play.setAttribute('class', 'button__hidden');
 	this.buttons.pause.setAttribute('class', 'button');
 	this.video_overlay.setAttribute('class', 'video__overlay__hidden');
 	this.video.play();
   }
-  
+
   pause() {
 	this.buttons.play.setAttribute('class', 'button');
 	this.buttons.pause.setAttribute('class', 'button__hidden');
 	this.video_overlay.setAttribute('class', 'video__overlay');
 	this.video.pause();
   }
-  
+
   rewind() {
 	this.video.currentTime -= 3;
   }
-  
+
   forward() {
 	this.video.currentTime += 3;
   }
-  
+
   mute() {
 	this.buttons.mute.setAttribute('class', 'button__hidden');
 	this.buttons.unmute.setAttribute('class', 'button');
 	this.video.muted = true;
   }
-  
+
   unmute() {
 	this.buttons.mute.setAttribute('class', 'button');
 	this.buttons.unmute.setAttribute('class', 'button__hidden');
 	this.video.muted = false;
   }
-  
+
   fullscreen() {
     this.launchIntoFullscreen(this.video);
-    
+
   }
-  
+
   launchIntoFullscreen(element) {
     if(element.requestFullscreen) {
       element.requestFullscreen();
@@ -102,13 +102,13 @@ class Videoplayer {
       element.msRequestFullscreen();
     }
   }
-  
+
   showError() {
 	var error = document.createElement('p');
 	error.appendChild(document.createTextNode('Videó er ekki til'));
 	this.video_container.insertBefore(error, this.video_container.firstChild);
   }
-  
+
   loadVideo(data) {
 	if(!data.videos[this.id-1]){
 	  this.showError();
@@ -129,7 +129,7 @@ class Videoplayer {
 	  this.loadControls();
 	}
   }
-  
+
   loadControls() {
 	var play = this.controls_container.querySelector('#play');
 	play.addEventListener('click', this.play.bind(this));
@@ -145,7 +145,7 @@ class Videoplayer {
 	unmute.addEventListener('click', this.unmute.bind(this));
 	var fullscreen = this.controls_container.querySelector('#fullscreen');
 	fullscreen.addEventListener('click', this.fullscreen.bind(this));
-	
+
 	this.buttons = {
 	  play,
 	  pause,
@@ -156,7 +156,7 @@ class Videoplayer {
 	  fullscreen,
 	}
   }
-  
+
   createVideoElement() {
 	this.video = document.createElement('video');
 	this.video.setAttribute('class', 'video');
@@ -166,12 +166,12 @@ class Videoplayer {
 	var playbutton = document.createElement('button');
 	playbutton.setAttribute('class', 'button');
 	playbutton.setAttribute('id', 'play');
-	
+
 	this.video_overlay.appendChild(playbutton);
 	this.video_container.appendChild(this.video);
 	this.video_container.appendChild(this.video_overlay);
   }
-  
+
   createbutton(name) {
 	var button = document.createElement('button');
 	button.setAttribute('class', 'button');
@@ -179,7 +179,7 @@ class Videoplayer {
 	this.controls_container.appendChild(button);
 	return button;
   }
-  
+
   createControlsElement() {
 	var rewind = this.createbutton('rewind');
 	var play = this.createbutton('play');
@@ -190,7 +190,7 @@ class Videoplayer {
 	unmute.setAttribute('class', 'button__hidden');
 	var fullscreen = this.createbutton('fullscreen');
 	var forward = this.createbutton('forward');
-	
+
 	this.buttons = {
 	  play,
 	  pause,
@@ -199,11 +199,6 @@ class Videoplayer {
 	  mute,
 	  unmute,
 	  fullscreen,
-	} 
+	}
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const videoplayer = new Videoplayer();
-  videoplayer.load();
-});

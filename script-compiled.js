@@ -8,246 +8,247 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * VideoPlayer
  */
 var Videoplayer = function () {
-	function Videoplayer() {
-		_classCallCheck(this, Videoplayer);
+		function Videoplayer() {
+				_classCallCheck(this, Videoplayer);
 
-		this.title_container = document.querySelector('#video__title');
-		var videoplayer = document.querySelector('.videoPlayer');
-		var back = document.querySelector('.button__back');
-		back.addEventListener('click', this.goBack.bind(this));
+				this.title_container = document.querySelector('#video__title');
+				var videoplayer = document.querySelector('.videoPlayer');
+				var back = document.querySelector('.button__back');
+				back.addEventListener('click', this.goBack.bind(this));
 
-		this.video_container = document.createElement('div');
-		this.video_container.setAttribute('class', 'video__container');
-		this.controls_container = document.createElement('div');
-		this.controls_container.setAttribute('class', 'video__controls');
+				this.video_container = document.createElement('div');
+				this.video_container.setAttribute('class', 'video__container');
+				this.controls_container = document.createElement('div');
+				this.controls_container.setAttribute('class', 'video__controls');
 
-		videoplayer.appendChild(this.video_container);
-		videoplayer.appendChild(this.controls_container);
-	}
-
-	_createClass(Videoplayer, [{
-		key: 'goBack',
-		value: function goBack() {
-			window.location.href = "../";
+				videoplayer.appendChild(this.video_container);
+				videoplayer.appendChild(this.controls_container);
 		}
-	}, {
-		key: 'load',
-		value: function load() {
-			this.createControlsElement();
-			this.createVideoElement();
-			this.id = window.location.search.substr(4);
-			this.fetchData();
-		}
-	}, {
-		key: 'fetchData',
-		value: function fetchData(data) {
-			var API_URL = "/videos.json";
-			var request = new XMLHttpRequest();
-			request.open('GET', API_URL, true);
-			var Videoplayer = this;
 
-			request.onload = function () {
-				if (request.status < 400) {
-					var data = JSON.parse(request.response);
-					Videoplayer.loadVideo(data);
-				} else {
-					this.showError();
+		_createClass(Videoplayer, [{
+				key: 'goBack',
+				value: function goBack() {
+						window.location.href = "../";
 				}
-			};
+		}, {
+				key: 'load',
+				value: function load() {
+						this.createControlsElement();
+						this.createVideoElement();
+						this.id = window.location.search.substr(4);
+						this.fetchData();
+				}
+		}, {
+				key: 'fetchData',
+				value: function fetchData(data) {
+						var API_URL = "/videos.json";
+						var request = new XMLHttpRequest();
+						request.open('GET', API_URL, true);
+						var Videoplayer = this;
 
-			request.onerror = function () {
-				this.showError();
-			};
+						request.onload = function () {
+								if (request.status < 400) {
+										var data = JSON.parse(request.response);
+										Videoplayer.loadVideo(data);
+								} else {
+										this.showError();
+								}
+						};
 
-			request.send();
-		}
-	}, {
-		key: 'play',
-		value: function play() {
-			this.buttons.play.setAttribute('class', 'button__hidden');
-			this.buttons.pause.setAttribute('class', 'button');
-			this.video_overlay.setAttribute('class', 'video__overlay__hidden');
-			this.video.play();
-		}
-	}, {
-		key: 'pause',
-		value: function pause() {
-			this.buttons.play.setAttribute('class', 'button');
-			this.buttons.pause.setAttribute('class', 'button__hidden');
-			this.video_overlay.setAttribute('class', 'video__overlay');
-			this.video.pause();
-		}
-	}, {
-		key: 'rewind',
-		value: function rewind() {
-			this.video.currentTime -= 3;
-		}
-	}, {
-		key: 'forward',
-		value: function forward() {
-			this.video.currentTime += 3;
-		}
-	}, {
-		key: 'mute',
-		value: function mute() {
-			this.buttons.mute.setAttribute('class', 'button__hidden');
-			this.buttons.unmute.setAttribute('class', 'button');
-			this.video.muted = true;
-		}
-	}, {
-		key: 'unmute',
-		value: function unmute() {
-			this.buttons.mute.setAttribute('class', 'button');
-			this.buttons.unmute.setAttribute('class', 'button__hidden');
-			this.video.muted = false;
-		}
-	}, {
-		key: 'fullscreen',
-		value: function fullscreen() {
-			this.launchIntoFullscreen(this.video);
-		}
-	}, {
-		key: 'launchIntoFullscreen',
-		value: function launchIntoFullscreen(element) {
-			if (element.requestFullscreen) {
-				element.requestFullscreen();
-			} else if (element.mozRequestFullScreen) {
-				element.mozRequestFullScreen();
-			} else if (element.webkitRequestFullscreen) {
-				element.webkitRequestFullscreen();
-			} else if (element.msRequestFullscreen) {
-				element.msRequestFullscreen();
-			}
-		}
-	}, {
-		key: 'showError',
-		value: function showError() {
-			var error = document.createElement('p');
-			error.appendChild(document.createTextNode('Videó er ekki til'));
-			this.video_container.insertBefore(error, this.video_container.firstChild);
-		}
-	}, {
-		key: 'loadVideo',
-		value: function loadVideo(data) {
-			if (!data.videos[this.id - 1]) {
-				this.showError();
-			} else {
-				this.video_overlay.setAttribute('class', 'video__overlay');
-				overlay.addEventListener('click', this.play.bind(this), false);
-				this.title_container.innerHTML = data.videos[this.id - 1].title;
-				this.video = this.video_container.querySelector('video');
-				this.videosrc = data.videos[this.id - 1].video;
-				this.video.setAttribute('src', this.videosrc);
-				this.videoposter = data.videos[this.id - 1].poster;
-				this.video.setAttribute('poster', this.videoposter);
-				this.video.addEventListener('ended', this.pause.bind(this), false);
-				this.video.addEventListener('click', this.pause.bind(this), false);
-				this.video.addEventListener('playing', this.play.bind(this), false);
-				this.video.addEventListener('pause', this.pause.bind(this), false);
-				this.loadControls();
-			}
-		}
-	}, {
-		key: 'loadControls',
-		value: function loadControls() {
-			var play = this.controls_container.querySelector('#play');
-			play.addEventListener('click', this.play.bind(this));
-			var pause = this.controls_container.querySelector('#pause');
-			pause.addEventListener('click', this.pause.bind(this));
-			var rewind = this.controls_container.querySelector('#rewind');
-			rewind.addEventListener('click', this.rewind.bind(this));
-			var forward = this.controls_container.querySelector('#forward');
-			forward.addEventListener('click', this.forward.bind(this));
-			var mute = this.controls_container.querySelector('#mute');
-			mute.addEventListener('click', this.mute.bind(this));
-			var unmute = this.controls_container.querySelector('#unmute');
-			unmute.addEventListener('click', this.unmute.bind(this));
-			var fullscreen = this.controls_container.querySelector('#fullscreen');
-			fullscreen.addEventListener('click', this.fullscreen.bind(this));
+						request.onerror = function () {
+								this.showError();
+						};
 
-			this.buttons = {
-				play: play,
-				pause: pause,
-				rewind: rewind,
-				forward: forward,
-				mute: mute,
-				unmute: unmute,
-				fullscreen: fullscreen
-			};
-		}
-	}, {
-		key: 'createVideoElement',
-		value: function createVideoElement() {
-			this.video = document.createElement('video');
-			this.video.setAttribute('class', 'video');
-			this.video_overlay = document.createElement('div');
-			this.video_overlay.setAttribute('class', 'video__overlay__hidden');
-			this.video_overlay.setAttribute('id', 'overlay');
-			var playbutton = document.createElement('button');
-			playbutton.setAttribute('class', 'button');
-			playbutton.setAttribute('id', 'play');
+						request.send();
+				}
+		}, {
+				key: 'play',
+				value: function play() {
+						this.buttons.play.setAttribute('class', 'button__hidden');
+						this.buttons.pause.setAttribute('class', 'button');
+						this.video_overlay.setAttribute('class', 'video__overlay__hidden');
+						this.video.play();
+				}
+		}, {
+				key: 'pause',
+				value: function pause() {
+						this.buttons.play.setAttribute('class', 'button');
+						this.buttons.pause.setAttribute('class', 'button__hidden');
+						this.video_overlay.setAttribute('class', 'video__overlay');
+						this.video.pause();
+				}
+		}, {
+				key: 'rewind',
+				value: function rewind() {
+						this.video.currentTime -= 3;
+				}
+		}, {
+				key: 'forward',
+				value: function forward() {
+						this.video.currentTime += 3;
+				}
+		}, {
+				key: 'mute',
+				value: function mute() {
+						this.buttons.mute.setAttribute('class', 'button__hidden');
+						this.buttons.unmute.setAttribute('class', 'button');
+						this.video.muted = true;
+				}
+		}, {
+				key: 'unmute',
+				value: function unmute() {
+						this.buttons.mute.setAttribute('class', 'button');
+						this.buttons.unmute.setAttribute('class', 'button__hidden');
+						this.video.muted = false;
+				}
+		}, {
+				key: 'fullscreen',
+				value: function fullscreen() {
+						this.launchIntoFullscreen(this.video);
+				}
+		}, {
+				key: 'launchIntoFullscreen',
+				value: function launchIntoFullscreen(element) {
+						if (element.requestFullscreen) {
+								element.requestFullscreen();
+						} else if (element.mozRequestFullScreen) {
+								element.mozRequestFullScreen();
+						} else if (element.webkitRequestFullscreen) {
+								element.webkitRequestFullscreen();
+						} else if (element.msRequestFullscreen) {
+								element.msRequestFullscreen();
+						}
+				}
+		}, {
+				key: 'showError',
+				value: function showError() {
+						var error = document.createElement('p');
+						error.appendChild(document.createTextNode('Videó er ekki til'));
+						this.video_container.insertBefore(error, this.video_container.firstChild);
+				}
+		}, {
+				key: 'loadVideo',
+				value: function loadVideo(data) {
+						if (!data.videos[this.id - 1]) {
+								this.showError();
+						} else {
+								this.video_overlay.setAttribute('class', 'video__overlay');
+								overlay.addEventListener('click', this.play.bind(this), false);
+								this.title_container.innerHTML = data.videos[this.id - 1].title;
+								this.video = this.video_container.querySelector('video');
+								this.videosrc = data.videos[this.id - 1].video;
+								this.video.setAttribute('src', this.videosrc);
+								this.videoposter = data.videos[this.id - 1].poster;
+								this.video.setAttribute('poster', this.videoposter);
+								this.video.addEventListener('ended', this.pause.bind(this), false);
+								this.video.addEventListener('click', this.pause.bind(this), false);
+								this.video.addEventListener('playing', this.play.bind(this), false);
+								this.video.addEventListener('pause', this.pause.bind(this), false);
+								this.loadControls();
+						}
+				}
+		}, {
+				key: 'loadControls',
+				value: function loadControls() {
+						var play = this.controls_container.querySelector('#play');
+						play.addEventListener('click', this.play.bind(this));
+						var pause = this.controls_container.querySelector('#pause');
+						pause.addEventListener('click', this.pause.bind(this));
+						var rewind = this.controls_container.querySelector('#rewind');
+						rewind.addEventListener('click', this.rewind.bind(this));
+						var forward = this.controls_container.querySelector('#forward');
+						forward.addEventListener('click', this.forward.bind(this));
+						var mute = this.controls_container.querySelector('#mute');
+						mute.addEventListener('click', this.mute.bind(this));
+						var unmute = this.controls_container.querySelector('#unmute');
+						unmute.addEventListener('click', this.unmute.bind(this));
+						var fullscreen = this.controls_container.querySelector('#fullscreen');
+						fullscreen.addEventListener('click', this.fullscreen.bind(this));
 
-			this.video_overlay.appendChild(playbutton);
-			this.video_container.appendChild(this.video);
-			this.video_container.appendChild(this.video_overlay);
-		}
-	}, {
-		key: 'createbutton',
-		value: function createbutton(name) {
-			var button = document.createElement('button');
-			button.setAttribute('class', 'button');
-			button.setAttribute('id', name);
-			this.controls_container.appendChild(button);
-			return button;
-		}
-	}, {
-		key: 'createControlsElement',
-		value: function createControlsElement() {
-			var rewind = this.createbutton('rewind');
-			var play = this.createbutton('play');
-			var pause = this.createbutton('pause');
-			pause.setAttribute('class', 'button__hidden');
-			var mute = this.createbutton('mute');
-			var unmute = this.createbutton('unmute');
-			unmute.setAttribute('class', 'button__hidden');
-			var fullscreen = this.createbutton('fullscreen');
-			var forward = this.createbutton('forward');
+						this.buttons = {
+								play: play,
+								pause: pause,
+								rewind: rewind,
+								forward: forward,
+								mute: mute,
+								unmute: unmute,
+								fullscreen: fullscreen
+						};
+				}
+		}, {
+				key: 'createVideoElement',
+				value: function createVideoElement() {
+						this.video = document.createElement('video');
+						this.video.setAttribute('class', 'video');
+						this.video_overlay = document.createElement('div');
+						this.video_overlay.setAttribute('class', 'video__overlay__hidden');
+						this.video_overlay.setAttribute('id', 'overlay');
+						var playbutton = document.createElement('button');
+						playbutton.setAttribute('class', 'button');
+						playbutton.setAttribute('id', 'play');
 
-			this.buttons = {
-				play: play,
-				pause: pause,
-				rewind: rewind,
-				forward: forward,
-				mute: mute,
-				unmute: unmute,
-				fullscreen: fullscreen
-			};
-		}
-	}]);
+						this.video_overlay.appendChild(playbutton);
+						this.video_container.appendChild(this.video);
+						this.video_container.appendChild(this.video_overlay);
+				}
+		}, {
+				key: 'createbutton',
+				value: function createbutton(name) {
+						var button = document.createElement('button');
+						button.setAttribute('class', 'button');
+						button.setAttribute('id', name);
+						this.controls_container.appendChild(button);
+						return button;
+				}
+		}, {
+				key: 'createControlsElement',
+				value: function createControlsElement() {
+						var rewind = this.createbutton('rewind');
+						var play = this.createbutton('play');
+						var pause = this.createbutton('pause');
+						pause.setAttribute('class', 'button__hidden');
+						var mute = this.createbutton('mute');
+						var unmute = this.createbutton('unmute');
+						unmute.setAttribute('class', 'button__hidden');
+						var fullscreen = this.createbutton('fullscreen');
+						var forward = this.createbutton('forward');
 
-	return Videoplayer;
+						this.buttons = {
+								play: play,
+								pause: pause,
+								rewind: rewind,
+								forward: forward,
+								mute: mute,
+								unmute: unmute,
+								fullscreen: fullscreen
+						};
+				}
+		}]);
+
+		return Videoplayer;
 }();
-
-document.addEventListener('DOMContentLoaded', function () {
-	var videoplayer = new Videoplayer();
-	videoplayer.load();
-});
 "use strict";
 
 document.addEventListener("DOMContentLoaded", function () {
-  var currentLocation = window.location["pathname"];
-  if (currentLocation === "/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html") {
+  var currentLocation = window.location.pathname;
+  if (currentLocation === "/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html" || currentLocation === "/ths220/vefforritun/stort-verkefni-2/" || currentLocation === "/ths220/vefforritun/stort-verkefni-2/index.html") {
     var API_URL = "/videos.json";
     if (currentLocation === "/svn5/vefforritun/stort-verkefni-2/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html") {
       API_URL = "/svn5/vefforritun/stort-verkefni-2/videos.json";
+    } else if (currentLocation === "/ths220/vefforritun/stort-verkefni-2/" || currentLocation === "/ths220/vefforritun/stort-verkefni-2/index.html") {
+      API_URL = "/ths220/vefforritun/stort-verkefni-2/videos.json";
     }
     writeHTML.fetchData(API_URL);
+  }
+
+  if (currentLocation === "/video.html") {
+    var videoplayer = new Videoplayer();
+    videoplayer.load();
   }
 });
 
 /**
 * Forrit sem skrifar html síðu eftir .json skrá,
-* keyrist með writeHTML.fetchData("skrá.json")
 */
 var writeHTML = function () {
   var allData;
@@ -260,12 +261,16 @@ var writeHTML = function () {
 
     showLoading();
 
-    fetch.open('GET', API_URL, true);
+    fetch.open("GET", API_URL, true);
     fetch.onload = function () {
       var data = JSON.parse(fetch.response);
-      allData = data;
-      write();
-      window.setTimeout(stopLoading, 500);
+      if (fetch.status >= 200 && fetch.status < 400) {
+        allData = data;
+        write();
+      } else {
+        showError("Villa kom upp: " + data.error);
+      }
+      window.setTimeout(stopLoading, 350);
     };
     fetch.send();
   }
@@ -312,7 +317,7 @@ var writeHTML = function () {
     var created = timeSince(allData.videos[videoID - 1].created);
     var duration = secToDuration(allData.videos[videoID - 1].duration);
     var poster = allData.videos[videoID - 1].poster;
-    var video = allData.videos[videoID - 1].video;
+    var video = "video.html?id=" + videoID;
 
     var outerDiv = document.createElement("div");
     outerDiv.setAttribute("class", "videoListing col col-6 col-sm-12");
@@ -356,7 +361,7 @@ var writeHTML = function () {
     return result;
   }
 
-  // Breytir dateString í texta sem segir hversu langur tími hefur liðið.
+  // Breytir date í texta sem segir hversu langur tími hefur liðið.
   function timeSince(date) {
     var now = Date.now();
     var timePassed = now - date;
@@ -408,6 +413,10 @@ var writeHTML = function () {
   function stopLoading() {
     var loading = document.querySelector(".loading");
     loading.remove();
+  }
+
+  function showError(error) {
+    main.appendChild(element("p", error));
   }
 
   return {

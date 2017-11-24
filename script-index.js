@@ -1,21 +1,30 @@
 
 document.addEventListener("DOMContentLoaded", function () {
-  var currentLocation = window.location["pathname"];
+  var currentLocation = window.location.pathname;
   if (currentLocation === "/" ||
       currentLocation === "/svn5/vefforritun/stort-verkefni-2/" ||
-      currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html") {
+      currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html" ||
+      currentLocation === "/ths220/vefforritun/stort-verkefni-2/" ||
+      currentLocation === "/ths220/vefforritun/stort-verkefni-2/index.html") {
     var API_URL = "/videos.json";
     if (currentLocation === "/svn5/vefforritun/stort-verkefni-2/" ||
         currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html") {
       API_URL = "/svn5/vefforritun/stort-verkefni-2/videos.json";
+    } else if (currentLocation === "/ths220/vefforritun/stort-verkefni-2/" ||
+               currentLocation === "/ths220/vefforritun/stort-verkefni-2/index.html") {
+      API_URL = "/ths220/vefforritun/stort-verkefni-2/videos.json";
     }
     writeHTML.fetchData(API_URL);
-    }
+  }
+
+  if (currentLocation === "/video.html") {
+    const videoplayer = new Videoplayer();
+    videoplayer.load();
+  }
 });
 
 /**
 * Forrit sem skrifar html síðu eftir .json skrá,
-* keyrist með writeHTML.fetchData("skrá.json")
 */
 var writeHTML = (function() {
   var allData;
@@ -28,12 +37,16 @@ var writeHTML = (function() {
 
     showLoading();
 
-    fetch.open('GET', API_URL, true);
+    fetch.open("GET", API_URL, true);
     fetch.onload = function() {
       var data = JSON.parse(fetch.response);
-      allData = data;
-      write();
-      window.setTimeout(stopLoading, 500);
+      if (fetch.status >= 200 && fetch.status < 400) {
+        allData = data;
+        write();
+      } else {
+        showError("Villa kom upp: " + data.error);
+      }
+      window.setTimeout(stopLoading, 350);
     }
     fetch.send();
   }
@@ -80,7 +93,7 @@ var writeHTML = (function() {
     var created = timeSince(allData.videos[videoID-1].created);
     var duration = secToDuration(allData.videos[videoID-1].duration);
     var poster = allData.videos[videoID-1].poster;
-    var video = allData.videos[videoID-1].video;
+    var video = "video.html?id=" + videoID;
 
     var outerDiv = document.createElement("div");
     outerDiv.setAttribute("class", "videoListing col col-6 col-sm-12");
@@ -124,7 +137,7 @@ var writeHTML = (function() {
     return result;
   }
 
-  // Breytir dateString í texta sem segir hversu langur tími hefur liðið.
+  // Breytir date í texta sem segir hversu langur tími hefur liðið.
   function timeSince(date) {
     var now = Date.now();
     var timePassed = now - date;
@@ -176,6 +189,10 @@ var writeHTML = (function() {
   function stopLoading() {
     var loading = document.querySelector(".loading");
     loading.remove();
+  }
+
+  function showError(error) {
+    main.appendChild(element("p", error));
   }
 
   return {
