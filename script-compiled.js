@@ -41,7 +41,8 @@ var Videoplayer = function () {
 		}, {
 				key: 'fetchData',
 				value: function fetchData(data) {
-						var API_URL = "/videos.json";
+						var currentUrl = window.location.pathname;
+						var API_URL = currentUrl.replace('video.html', 'videos.json');
 						var request = new XMLHttpRequest();
 						request.open('GET', API_URL, true);
 						var Videoplayer = this;
@@ -231,7 +232,8 @@ var Videoplayer = function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   var currentLocation = window.location.pathname;
-  if (currentLocation === "/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html" || currentLocation === "/ths220/vefforritun/stort-verkefni-2/" || currentLocation === "/ths220/vefforritun/stort-verkefni-2/index.html") {
+  var urlLastEntry = currentLocation.split("/").pop();
+  if (urlLastEntry === "" || urlLastEntry === "index.html") {
     var API_URL = "/videos.json";
     if (currentLocation === "/svn5/vefforritun/stort-verkefni-2/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html") {
       API_URL = "/svn5/vefforritun/stort-verkefni-2/videos.json";
@@ -241,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
     writeHTML.fetchData(API_URL);
   }
 
-  if (currentLocation === "/video.html") {
+  if (urlLastEntry === "video.html") {
     var videoplayer = new Videoplayer();
     videoplayer.load();
   }

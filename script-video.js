@@ -30,7 +30,8 @@ class Videoplayer {
   }
 
   fetchData(data){
-	var API_URL = "/videos.json";
+  var currentUrl = window.location.pathname;
+	var API_URL = currentUrl.replace('video.html', 'videos.json');
     var request = new XMLHttpRequest();
     request.open('GET', API_URL, true);
     var Videoplayer = this;
