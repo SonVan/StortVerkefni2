@@ -131,30 +131,13 @@ class Videoplayer {
   }
 
   loadControls() {
-	var play = this.controls_container.querySelector('#play');
-	play.addEventListener('click', this.play.bind(this));
-	var pause = this.controls_container.querySelector('#pause');
-	pause.addEventListener('click', this.pause.bind(this));
-	var rewind = this.controls_container.querySelector('#rewind');
-	rewind.addEventListener('click', this.rewind.bind(this));
-	var forward = this.controls_container.querySelector('#forward');
-	forward.addEventListener('click', this.forward.bind(this));
-	var mute = this.controls_container.querySelector('#mute');
-	mute.addEventListener('click', this.mute.bind(this));
-	var unmute = this.controls_container.querySelector('#unmute');
-	unmute.addEventListener('click', this.unmute.bind(this));
-	var fullscreen = this.controls_container.querySelector('#fullscreen');
-	fullscreen.addEventListener('click', this.fullscreen.bind(this));
-
-	this.buttons = {
-	  play,
-	  pause,
-	  rewind,
-	  forward,
-	  mute,
-	  unmute,
-	  fullscreen,
-	}
+	this.buttons.play.addEventListener('click', this.play.bind(this));
+	this.buttons.pause.addEventListener('click', this.pause.bind(this));
+	this.buttons.rewind.addEventListener('click', this.rewind.bind(this));
+	this.buttons.forward.addEventListener('click', this.forward.bind(this));
+	this.buttons.mute.addEventListener('click', this.mute.bind(this));
+	this.buttons.unmute.addEventListener('click', this.unmute.bind(this));
+	this.buttons.fullscreen.addEventListener('click', this.fullscreen.bind(this));
   }
 
   createVideoElement() {
