@@ -1,12 +1,12 @@
 .loading {
   position: fixed;
+  top: 30vh;
   z-index: 1;
-  width: 100%;
   display: flex;
+  width: 100%;
   justify-content: center;
   max-width: 1000px;
   margin-left: -20px;
-  top: 30vh;
 }
 
 .gif {

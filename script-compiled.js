@@ -28,7 +28,7 @@ var Videoplayer = function () {
 		_createClass(Videoplayer, [{
 				key: 'goBack',
 				value: function goBack() {
-						window.location.href = "../";
+						window.location.href = "./";
 				}
 		}, {
 				key: 'load',
@@ -41,8 +41,7 @@ var Videoplayer = function () {
 		}, {
 				key: 'fetchData',
 				value: function fetchData(data) {
-						var currentUrl = window.location.pathname;
-						var API_URL = currentUrl.replace('video.html', 'videos.json');
+						var API_URL = "./videos.json";
 						var request = new XMLHttpRequest();
 						request.open('GET', API_URL, true);
 						var Videoplayer = this;
@@ -228,82 +227,35 @@ var Videoplayer = function () {
 
 		return Videoplayer;
 }();
-"use strict";
 
 document.addEventListener("DOMContentLoaded", function () {
-  var currentLocation = window.location.pathname;
-  var urlLastEntry = currentLocation.split("/").pop();
-  if (urlLastEntry === "" || urlLastEntry === "index.html") {
-    var API_URL = "/videos.json";
-    if (currentLocation === "/svn5/vefforritun/stort-verkefni-2/" || currentLocation === "/svn5/vefforritun/stort-verkefni-2/index.html") {
-      API_URL = "/svn5/vefforritun/stort-verkefni-2/videos.json";
-    } else if (currentLocation === "/ths220/vefforritun/stort-verkefni-2/" || currentLocation === "/ths220/vefforritun/stort-verkefni-2/index.html") {
-      API_URL = "/ths220/vefforritun/stort-verkefni-2/videos.json";
-    }
-    writeHTML.fetchData(API_URL);
-  }
-
-  if (urlLastEntry === "video.html") {
-    var videoplayer = new Videoplayer();
-    videoplayer.load();
-  }
+		var currentUrlLastEntry = window.location.pathname.split("/").pop();
+		if (currentUrlLastEntry === "video.html") {
+				var videoplayer = new Videoplayer();
+				videoplayer.load();
+		}
 });
+'use strict';
 
 /**
 * Forrit sem skrifar html síðu eftir .json skrá,
 */
-var writeHTML = function () {
-  var allData;
-  var main = document.querySelector("main");
-  var row;
-
-  // Nær í gögnin og kallar á write() til að skrifa html.
-  function fetchData(API_URL) {
-    var fetch = new XMLHttpRequest();
-
-    showLoading();
-
-    fetch.open("GET", API_URL, true);
-    fetch.onload = function () {
-      var data = JSON.parse(fetch.response);
-      if (fetch.status >= 200 && fetch.status < 400) {
-        allData = data;
-        write();
-      } else {
-        showError("Villa kom upp: " + data.error);
-      }
-      window.setTimeout(stopLoading, 350);
-    };
-    fetch.send();
-  }
-
-  // Kallar á writeCategory() til að búa til flokk, og kallar á writeVideo()
-  // fyrir hvert myndband sem á að vera inni í flokknum.
-  function write() {
-    var cLength = allData.categories.length;
-
-    for (var i = 0; i < cLength; i++) {
-      var vLength = allData.categories[i].videos.length;
-      var categoryTitle = allData.categories[i].title;
-      writeCategory(categoryTitle);
-      for (var j = 0; j < vLength; j++) {
-        var videoID = allData.categories[i].videos[j];
-        writeVideo(videoID);
-      }
-    }
-  }
+var writeHTML = function writeHTML() {
+  var allData = void 0;
+  var main = document.querySelector('main');
+  var row = void 0;
 
   // Skrifar titil á videoflokk og bætir við línu fyrir neðan.
   function writeCategory(categoryTitle) {
-    var section = document.createElement("section");
-    var hr = document.createElement("hr");
+    var section = document.createElement('section');
+    var hr = document.createElement('hr');
 
-    var h1 = document.createElement("h1");
-    h1.setAttribute("class", "categoryTitle");
+    var h1 = document.createElement('h1');
+    h1.setAttribute('class', 'categoryTitle');
     h1.appendChild(document.createTextNode(categoryTitle));
 
-    var div = document.createElement("div");
-    div.setAttribute("class", "row");
+    var div = document.createElement('div');
+    div.setAttribute('class', 'row');
 
     section.appendChild(h1);
     section.appendChild(div);
@@ -311,48 +263,6 @@ var writeHTML = function () {
     main.appendChild(hr);
 
     row = div;
-  }
-
-  // Bætir myndbandi við videoflokk.
-  function writeVideo(videoID) {
-    var title = allData.videos[videoID - 1].title;
-    var created = timeSince(allData.videos[videoID - 1].created);
-    var duration = secToDuration(allData.videos[videoID - 1].duration);
-    var poster = allData.videos[videoID - 1].poster;
-    var video = "video.html?id=" + videoID;
-
-    var outerDiv = document.createElement("div");
-    outerDiv.setAttribute("class", "videoListing col col-6 col-sm-12");
-
-    var innerDiv1 = document.createElement("a");
-    innerDiv1.setAttribute("href", video);
-    innerDiv1.setAttribute("class", "thumbnail");
-
-    var innerDiv2 = document.createElement("div");
-    innerDiv2.setAttribute("class", "description");
-
-    var x2InnerDiv1 = document.createElement("img");
-    x2InnerDiv1.setAttribute("src", poster);
-    x2InnerDiv1.setAttribute("class", "image");
-
-    var x2InnerDiv2 = document.createElement("div");
-    x2InnerDiv2.setAttribute("class", "videoTime");
-    x2InnerDiv2.appendChild(document.createTextNode(duration));
-
-    var x2InnerDiv3 = document.createElement("a");
-    x2InnerDiv3.setAttribute("href", video);
-    x2InnerDiv3.appendChild(document.createTextNode(title));
-
-    var x2InnerDiv4 = document.createElement("p");
-    x2InnerDiv4.appendChild(document.createTextNode(created));
-
-    row.appendChild(outerDiv);
-    outerDiv.appendChild(innerDiv1);
-    outerDiv.appendChild(innerDiv2);
-    innerDiv1.appendChild(x2InnerDiv1);
-    innerDiv1.appendChild(x2InnerDiv2);
-    innerDiv2.appendChild(x2InnerDiv3);
-    innerDiv2.appendChild(x2InnerDiv4);
   }
 
   // Breytir int sekúndum í tíma á forminu 00:00.
@@ -376,54 +286,142 @@ var writeHTML = function () {
     var years = Math.floor(totalSecs / (60 * 60 * 24 * 365));
 
     if (years === 1) {
-      return "Fyrir " + years + " ári síðan";
+      return 'Fyrir ' + years + ' \xE1ri s\xED\xF0an';
     } else if (years > 1) {
-      return "Fyrir " + years + " árum síðan";
+      return 'Fyrir ' + years + ' \xE1rum s\xED\xF0an';
     } else if (months === 1) {
-      return "Fyrir " + months + " mánuði síðan";
+      return 'Fyrir ' + months + ' m\xE1nu\xF0i s\xED\xF0an';
     } else if (months > 1) {
-      return "Fyrir " + months + " mánuðum síðan";
+      return 'Fyrir ' + months + ' m\xE1nu\xF0um s\xED\xF0an';
     } else if (weeks === 1) {
-      return "Fyrir " + weeks + " viku síðan";
+      return 'Fyrir ' + weeks + ' viku s\xED\xF0an';
     } else if (weeks > 1) {
-      return "Fyrir " + weeks + " vikum síðan";
+      return 'Fyrir ' + weeks + ' vikum s\xED\xF0an';
     } else if (days === 1) {
-      return "Fyrir " + days + " degi síðan";
+      return 'Fyrir ' + days + ' degi s\xED\xF0an';
     } else if (days > 1) {
-      return "Fyrir " + days + " dögum síðan";
+      return 'Fyrir ' + days + ' d\xF6gum s\xED\xF0an';
     } else if (hours === 1) {
-      return "Fyrir " + hours + " klukkustund síðan";
+      return 'Fyrir ' + hours + ' klukkustund s\xED\xF0an';
     } else if (hours > 1) {
-      return "Fyrir " + hours + " klukkustundum síðan";
-    } else {
-      return "Vantar upphlöðunardagsetningu";
+      return 'Fyrir ' + hours + ' klukkustundum s\xED\xF0an';
     }
+    return 'Vantar upphlöðunardagsetningu';
   }
 
   function showLoading() {
-    var loading = document.createElement("div");
-    loading.setAttribute("class", "loading");
+    var loading = document.createElement('div');
+    loading.setAttribute('class', 'loading');
 
-    var img = document.createElement("img");
-    img.setAttribute("src", "loading.gif");
-    img.setAttribute("class", "gif");
+    var img = document.createElement('img');
+    img.setAttribute('src', 'loading.gif');
+    img.setAttribute('class', 'gif');
 
     loading.appendChild(img);
     main.appendChild(loading);
   }
 
   function stopLoading() {
-    var loading = document.querySelector(".loading");
+    var loading = document.querySelector('.loading');
     loading.remove();
   }
 
   function showError(error) {
-    main.appendChild(element("p", error));
+    var p = document.createElement('p');
+    p.appendChild(document.createTextNode(error));
+    main.appendChild(p);
+  }
+
+  // Bætir myndbandi við videoflokk.
+  function writeVideo(videoID) {
+    var title1 = allData.videos[videoID - 1].title;
+    var created = timeSince(allData.videos[videoID - 1].created);
+    var duration = secToDuration(allData.videos[videoID - 1].duration);
+    var poster1 = allData.videos[videoID - 1].poster;
+    var video = 'video.html?id=' + videoID;
+
+    var outerDiv = document.createElement('div');
+    outerDiv.setAttribute('class', 'videoListing col col-6 col-sm-12');
+
+    var innerDiv1 = document.createElement('a');
+    innerDiv1.setAttribute('href', video);
+    innerDiv1.setAttribute('class', 'thumbnail');
+
+    var innerDiv2 = document.createElement('div');
+    innerDiv2.setAttribute('class', 'description');
+
+    var x2InnerDiv1 = document.createElement('img');
+    x2InnerDiv1.setAttribute('src', poster1);
+    x2InnerDiv1.setAttribute('class', 'image');
+
+    var x2InnerDiv2 = document.createElement('div');
+    x2InnerDiv2.setAttribute('class', 'videoTime');
+    x2InnerDiv2.appendChild(document.createTextNode(duration));
+
+    var x2InnerDiv3 = document.createElement('a');
+    x2InnerDiv3.setAttribute('href', video);
+    x2InnerDiv3.appendChild(document.createTextNode(title1));
+
+    var x2InnerDiv4 = document.createElement('p');
+    x2InnerDiv4.appendChild(document.createTextNode(created));
+
+    row.appendChild(outerDiv);
+    outerDiv.appendChild(innerDiv1);
+    outerDiv.appendChild(innerDiv2);
+    innerDiv1.appendChild(x2InnerDiv1);
+    innerDiv1.appendChild(x2InnerDiv2);
+    innerDiv2.appendChild(x2InnerDiv3);
+    innerDiv2.appendChild(x2InnerDiv4);
+  }
+
+  // Kallar á writeCategory() til að búa til flokk, og kallar á writeVideo()
+  // fyrir hvert myndband sem á að vera inni í flokknum.
+  function write() {
+    var cLength = allData.categories.length;
+
+    for (var i = 0; i < cLength; i += 1) {
+      var vLength = allData.categories[i].videos.length;
+      var categoryTitle = allData.categories[i].title;
+      writeCategory(categoryTitle);
+      for (var j = 0; j < vLength; j += 1) {
+        var videoID = allData.categories[i].videos[j];
+        writeVideo(videoID);
+      }
+    }
+  }
+
+  // Nær í gögnin og kallar á write() til að skrifa html.
+  function fetchData(API_URL) {
+    var fetch = new XMLHttpRequest();
+
+    showLoading();
+
+    fetch.open('GET', API_URL, true);
+    fetch.onload = function fetchOnload() {
+      var data = JSON.parse(fetch.response);
+      if (fetch.status >= 200 && fetch.status < 400) {
+        allData = data;
+        write();
+      } else {
+        showError('Villa kom upp: ' + data.error);
+      }
+      window.setTimeout(stopLoading, 350);
+    };
+    fetch.send();
   }
 
   return {
     fetchData: fetchData
   };
 }();
+
+document.addEventListener('DOMContentLoaded', function () {
+  var currentUrlLastEntry = window.location.pathname.split('/').pop();
+  var API_URL = void 0;
+  if (currentUrlLastEntry === '' || currentUrlLastEntry === 'index.html') {
+    API_URL = './videos.json';
+    writeHTML.fetchData(API_URL);
+  }
+});
 
 //# sourceMappingURL=script-compiled.js.map

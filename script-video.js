@@ -19,7 +19,7 @@ class Videoplayer {
   }
 
   goBack() {
-	window.location.href = "../";
+	window.location.href = "./";
   }
 
   load() {
@@ -30,8 +30,7 @@ class Videoplayer {
   }
 
   fetchData(data){
-  var currentUrl = window.location.pathname;
-	var API_URL = currentUrl.replace('video.html', 'videos.json');
+  	var API_URL = "./videos.json";
     var request = new XMLHttpRequest();
     request.open('GET', API_URL, true);
     var Videoplayer = this;
@@ -203,3 +202,11 @@ class Videoplayer {
 	}
   }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  var currentUrlLastEntry = window.location.pathname.split("/").pop();
+  if (currentUrlLastEntry === "video.html") {
+    const videoplayer = new Videoplayer();
+    videoplayer.load();
+  }
+});
