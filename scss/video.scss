@@ -1,12 +1,12 @@
-#video__title {
-  text-align: center;
+.video__title {
   overflow: hidden;
+  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 @media (max-width: 499px) {
-  #video__title {
+  .video__title {
     font-size: 1rem;
   }
 }
@@ -34,7 +34,10 @@
 
 .video__overlay {
   position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.2);
